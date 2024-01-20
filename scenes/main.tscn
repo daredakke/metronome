@@ -1,0 +1,265 @@
+[gd_scene load_steps=14 format=3 uid="uid://cu52rdw1upvq3"]
+
+[ext_resource type="Texture2D" uid="uid://ccy5yur3cp65c" path="res://circle.png" id="1_1g2kb"]
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_5ecpg"]
+[ext_resource type="Script" path="res://scenes/play_button.gd" id="1_iivyn"]
+[ext_resource type="Script" path="res://scenes/dial.gd" id="1_l2laq"]
+[ext_resource type="Texture2D" uid="uid://d0f3lrrx562h" path="res://circle-white.png" id="2_nm5cs"]
+[ext_resource type="Script" path="res://scenes/bpm.gd" id="4_vvra6"]
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_5xsjy"]
+color = Color(0.2, 0.2, 0.2, 1)
+grow_begin = -1.0
+grow_end = -1.0
+thickness = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mp3oq"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t2ral"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7c4sn"]
+bg_color = Color(0.2, 0.2, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_788pj"]
+bg_color = Color(0.8, 0.8, 0.8, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_qs0s4"]
+radius = 241.008
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g5pwy"]
+content_margin_left = 32.0
+content_margin_right = 32.0
+bg_color = Color(0.113725, 0.113725, 0.113725, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_5ecpg")
+
+[node name="BPMTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="SFXPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+
+[node name="Background" type="Polygon2D" parent="."]
+color = Color(0.113725, 0.113725, 0.113725, 1)
+polygon = PackedVector2Array(0, 0, 0, 800, 600, 800, 600, 0)
+
+[node name="LEDOffSprite" type="Sprite2D" parent="."]
+modulate = Color(0.2, 0.2, 0.2, 1)
+position = Vector2(35, 208)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_nm5cs")
+
+[node name="LEDOnSprite" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 0, 0, 1)
+position = Vector2(35, 208)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_nm5cs")
+
+[node name="Volume" type="Control" parent="."]
+custom_minimum_size = Vector2(600, 800)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 800.0
+mouse_filter = 2
+
+[node name="VolumeMargin" type="MarginContainer" parent="Volume"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 189.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 128
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBox" type="HBoxContainer" parent="Volume/VolumeMargin"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 22
+
+[node name="VolumeLabel" type="Label" parent="Volume/VolumeMargin/HBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "VOLUME"
+
+[node name="VolumeSlider" type="HSlider" parent="Volume/VolumeMargin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_default_cursor_shape = 2
+theme_override_constants/center_grabber = 1
+theme_override_styles/slider = SubResource("StyleBoxLine_5xsjy")
+max_value = 1.0
+step = 0.01
+value = 0.5
+
+[node name="Options" type="Control" parent="."]
+custom_minimum_size = Vector2(600, 800)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 800.0
+mouse_filter = 2
+
+[node name="OptionsMargin" type="MarginContainer" parent="Options"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="HBox" type="HBoxContainer" parent="Options/OptionsMargin"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="LeftVBox" type="VBoxContainer" parent="Options/OptionsMargin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="TimeSigLabel" type="Label" parent="Options/OptionsMargin/HBox/LeftVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "TIME SIGNATURE"
+horizontal_alignment = 1
+
+[node name="TimeSigDropdown" type="OptionButton" parent="Options/OptionsMargin/HBox/LeftVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_pressed_color = Color(0.113725, 0.113725, 0.113725, 1)
+theme_override_colors/font_hover_color = Color(0.113725, 0.113725, 0.113725, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_mp3oq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t2ral")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_t2ral")
+alignment = 1
+
+[node name="RightVBox" type="VBoxContainer" parent="Options/OptionsMargin/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SoundLabel" type="Label" parent="Options/OptionsMargin/HBox/RightVBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "SOUND"
+horizontal_alignment = 1
+
+[node name="SoundDropdown" type="OptionButton" parent="Options/OptionsMargin/HBox/RightVBox"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_pressed_color = Color(0.113725, 0.113725, 0.113725, 1)
+theme_override_colors/font_hover_color = Color(0.113725, 0.113725, 0.113725, 1)
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_mp3oq")
+theme_override_styles/hover = SubResource("StyleBoxFlat_t2ral")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_t2ral")
+alignment = 1
+selected = 0
+
+[node name="Play" type="Control" parent="."]
+custom_minimum_size = Vector2(600, 800)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 800.0
+mouse_filter = 2
+
+[node name="PlayMargin" type="MarginContainer" parent="Play"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="PlayButton" type="Button" parent="Play/PlayMargin"]
+layout_mode = 2
+mouse_default_cursor_shape = 2
+theme_override_colors/font_pressed_color = Color(0.113725, 0.113725, 0.113725, 1)
+theme_override_font_sizes/font_size = 48
+theme_override_styles/normal = SubResource("StyleBoxFlat_7c4sn")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_788pj")
+toggle_mode = true
+text = "PLAY"
+script = ExtResource("1_iivyn")
+
+[node name="Dial" type="CharacterBody2D" parent="."]
+input_pickable = true
+motion_mode = 1
+script = ExtResource("1_l2laq")
+rotation_amount = 0.005
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Dial"]
+position = Vector2(302, 444)
+shape = SubResource("CircleShape2D_qs0s4")
+
+[node name="DialSprite" type="Sprite2D" parent="Dial"]
+position = Vector2(302, 444)
+texture = ExtResource("1_1g2kb")
+
+[node name="BPM" type="Control" parent="."]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(600, 800)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 600.0
+offset_bottom = 800.0
+mouse_filter = 2
+script = ExtResource("4_vvra6")
+bpm_change_amount = 0.22
+
+[node name="BPMMargin" type="MarginContainer" parent="BPM"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -114.5
+offset_top = -66.0
+offset_right = 114.5
+offset_bottom = 66.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 96
+
+[node name="BPMPanel" type="PanelContainer" parent="BPM/BPMMargin"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_g5pwy")
+
+[node name="BPMLabel" type="Label" parent="BPM/BPMMargin/BPMPanel"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 96
+text = "120"
+horizontal_alignment = 1
+
+[connection signal="timeout" from="BPMTimer" to="." method="_on_bpm_timer_timeout"]
+[connection signal="finished" from="SFXPlayer" to="." method="_on_sfx_player_finished"]
+[connection signal="value_changed" from="Volume/VolumeMargin/HBox/VolumeSlider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="item_selected" from="Options/OptionsMargin/HBox/LeftVBox/TimeSigDropdown" to="." method="_on_time_sig_dropdown_item_selected"]
+[connection signal="item_selected" from="Options/OptionsMargin/HBox/RightVBox/SoundDropdown" to="." method="_on_sound_dropdown_item_selected"]
+[connection signal="toggled" from="Play/PlayMargin/PlayButton" to="." method="_on_play_button_toggled"]
+[connection signal="toggled" from="Play/PlayMargin/PlayButton" to="Play/PlayMargin/PlayButton" method="_on_toggled"]
+[connection signal="dial_rotated" from="Dial" to="BPM" method="_on_dial_rotated"]
+[connection signal="bpm_changed" from="BPM" to="." method="_on_bpm_changed"]
